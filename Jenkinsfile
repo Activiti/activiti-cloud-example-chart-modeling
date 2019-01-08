@@ -7,7 +7,7 @@ pipeline {
     }
     environment {
       ORG               = 'activiti'
-      APP_NAME          = 'activiti-cloud-full-example'
+      APP_NAME          = 'activiti-cloud-example-chart-modeling'
       CHARTMUSEUM_CREDS = credentials('jenkins-x-chartmuseum')
       GITHUB_CHARTS_REPO    = "https://github.com/Activiti/activiti-cloud-helm-charts.git"
       GITHUB_HELM_REPO_URL = "https://activiti.github.io/activiti-cloud-helm-charts/"
@@ -67,7 +67,7 @@ pipeline {
             dir("./activiti-cloud-acceptance-scenarios") {
               git 'https://github.com/Activiti/activiti-cloud-acceptance-scenarios.git'
               sh 'sleep 120'
-              sh "mvn clean install -DskipTests && mvn -pl '!apps-acceptance-tests,!multiple-runtime-acceptance-tests' clean verify"
+              sh "mvn clean install -DskipTests && mvn -pl 'modeling-acceptance-tests' clean verify"
             }	  
 	    //end run tests	  
           }
