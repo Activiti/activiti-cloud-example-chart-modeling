@@ -1,6 +1,6 @@
 #CHART_REPO := http://jenkins-x-chartmuseum:8080
 CURRENT=$(pwd)
-NAME := activiti-cloud-full-example
+NAME := activiti-cloud-example-chart-modeling
 OS := $(shell uname)
 RELEASE_VERSION := $(shell cat ../../VERSION)
 
