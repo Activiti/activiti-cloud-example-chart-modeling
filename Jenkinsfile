@@ -60,10 +60,10 @@ pipeline {
             sh "jx step git credentials"
             // so we can retrieve the version in later steps
             sh "echo \$(jx-release-version) > VERSION"
-            dir ("./charts/$APP_NAME") {
-              sh 'make install'
-            }
-	          //run tests	comment for test
+            //dir ("./charts/$APP_NAME") {
+            //  sh 'make install'
+            //}
+	     //run tests	comment for test
             //dir("./activiti-cloud-acceptance-scenarios") {
             //  git 'https://github.com/Activiti/activiti-cloud-acceptance-scenarios.git'
             //  sh 'sleep 120'
