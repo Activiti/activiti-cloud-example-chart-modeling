@@ -63,13 +63,25 @@ pipeline {
             dir ("./charts/$APP_NAME") {
               sh 'make install'
             }
-	          //run tests	
-            dir("./activiti-cloud-acceptance-scenarios") {
-              git 'https://github.com/Activiti/activiti-cloud-acceptance-scenarios.git'
-              sh 'sleep 120'
-              sh "mvn clean install -DskipTests && mvn -pl 'modeling-acceptance-tests' clean verify"
-            }	  
-	    //end run tests	  
+	          //run tests	comment for test
+            //dir("./activiti-cloud-acceptance-scenarios") {
+            //  git 'https://github.com/Activiti/activiti-cloud-acceptance-scenarios.git'
+            //  sh 'sleep 120'
+            //  sh "mvn clean install -DskipTests && mvn -pl 'modeling-acceptance-tests' clean verify"
+            //}
+		  
+	    //end run tests'
+	     dir ("./charts/$APP_NAME") {
+	      retry(5) {    
+                sh 'make tag'
+              }
+            sh 'make release'
+	      retry(5) {    
+                sh 'make github'
+              }
+            }
+	    ////	  
+		  
           }
         }
       }
