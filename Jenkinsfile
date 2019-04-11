@@ -47,7 +47,7 @@ pipeline {
         when {
           branch 'master'
         }
-	environment {
+	      environment {
          GATEWAY_HOST = "activiti-cloud-gateway.$PREVIEW_NAMESPACE.35.228.195.195.nip.io"
          SSO_HOST = "activiti-keycloak.$PREVIEW_NAMESPACE.35.228.195.195.nip.io"
         }      
@@ -63,7 +63,7 @@ pipeline {
             dir ("./charts/$APP_NAME") {
               sh 'make install'
             }
-	   //run tests	
+	          //run tests	
             dir("./activiti-cloud-acceptance-scenarios") {
               git 'https://github.com/Activiti/activiti-cloud-acceptance-scenarios.git'
               sh 'sleep 120'
@@ -73,6 +73,21 @@ pipeline {
           }
         }
       }
+      stage('Promote to Environments') {
+         when {
+            branch 'master'
+         }
+         steps {
+           container('maven') {
+             dir ("./charts/$APP_NAME") {
+               sh 'jx step changelog --version v\$(cat ../../VERSION)'
+	       retry(5) {	
+	         sh 'jx promote -b --all-auto --helm-repo-url=$GITHUB_HELM_REPO_URL --timeout 1h --version \$(cat ../../VERSION) --no-wait'
+	       }	      
+             }
+           }
+         }
+      }	    
     }
    post {
         always {
